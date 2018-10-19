@@ -22,3 +22,5 @@ For the visuals I intend to follow an uncomplicated yet abstract style that is v
 [Unity Manual on Randomisation](https://docs.unity3d.com/Manual/RandomNumbers.html).
 
 [Tutorial that covers Voxel terrain and Perlin noise](https://forum.unity.com/threads/tutorial-procedural-meshes-and-voxel-terrain-c.198651/).
+
+[Inspirational video](https://www.youtube.com/watch?v=TWpgMDCW874).
