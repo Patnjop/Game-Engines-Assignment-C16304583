@@ -5,6 +5,7 @@ using UnityEngine;
 public class Initialisation : MonoBehaviour {
 
     public GameObject startprefab;
+    public float Radius = 0.5f;
     bool isCreated = false;
     Vector3 mouse, start;
 
@@ -18,7 +19,7 @@ public class Initialisation : MonoBehaviour {
         {
             mouse = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
             CreateBuilding();
-            //isCreated = true;
+            isCreated = true;
         }
     }
 
@@ -35,6 +36,7 @@ public class Initialisation : MonoBehaviour {
         {
             start = Camera.main.ScreenToWorldPoint(mouse);
         }
+        start.y += Radius;
         Instantiate(startprefab, start, Quaternion.identity);
     }
 }
