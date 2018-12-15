@@ -5,7 +5,7 @@ using UnityEngine;
 public class Setup : MonoBehaviour {
 
     [Range(1f, 10f)]
-    public float Expansion;
+    public int Expansion;
 
     GameObject plane;
 
@@ -17,6 +17,6 @@ public class Setup : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        plane.transform.localScale = new Vector3((int)Expansion, (int)Expansion, (int)Expansion);
+        plane.transform.localScale = new Vector3(Expansion, Expansion, Expansion);
     }
 }
