@@ -29,10 +29,12 @@ public class BuildingSpawner : MonoBehaviour {
     void CreateBuilding()
     {
         initialPos = Random.insideUnitCircle * 0.25f;  
-        targetPos = this.transform.position + new Vector3 (initialPos.x, 0, initialPos.y);
+        targetPos = this.transform.position + new Vector3 (initialPos.x, 0f, initialPos.y);
+        targetPos.y = 0.03f;
         if (Vector3.Distance(targetPos, this.transform.position) <= 0.05)
         {
-            targetPos *= 2f;
+            targetPos.x *= 1.5f;
+            targetPos.z *= 1.5f;
         }
         Instantiate(buildingPrefab, targetPos, Quaternion.identity);
     }
