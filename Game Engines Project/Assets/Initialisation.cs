@@ -11,6 +11,7 @@ public class Initialisation : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+       
 	}
 
     private void Update()
@@ -30,13 +31,15 @@ public class Initialisation : MonoBehaviour {
         if (Physics.Raycast(ray, out raycastHit, 1000f))
         {
             start = raycastHit.point;
-            Debug.Log(start);
         }
         else
         {
             start = Camera.main.ScreenToWorldPoint(mouse);
         }
         start.y += Radius;
+        //ListChecker.transforms.Add(start);
+        ListChecker.xValues.Add((int)start.x);
+        ListChecker.zValues.Add((int)start.z);
         Instantiate(startprefab, start, Quaternion.identity);
     }
 }
