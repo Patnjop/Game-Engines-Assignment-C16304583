@@ -5,51 +5,50 @@ using UnityEngine;
 public class BuildingSpawner : MonoBehaviour
 {
     public Vector3 targetPos;
-    Vector2 targetAdd;
+    Vector2 targetAdd, initialPos;
     public GameObject buildingPrefab, travellerPrefab;
-    public int maxRange;
+    int maxRange;
     float timer, halfRadius;
     public float maxTime;
     int count, lineCount, initialX, initialZ, travellerCount;
     LineRenderer line;
     bool build;
     public List<GameObject> travellers = new List<GameObject>();
+    Setup setup;
 
     private void Start()
     {
-        line = GetComponent<LineRenderer>();
-        maxTime = 2f;
+        setup = GameObject.Find("GameManager").GetComponent<Setup>();
+        maxTime = 0.1f;
         halfRadius = 0.3f;
         lineCount = 1;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        maxRange = setup.Expansion / 2;
         timer += Time.deltaTime;
         if (timer >= maxTime && build == false)
         {
             CreateBuilding();
             timer = 0;
         }
-        Debug.Log("build is " + build);
-        Debug.Log("target is at " + targetPos);
-        Debug.Log(travellerCount + " is at " + travellers[travellerCount].GetComponent<moveTowards>().current);
+
         if (build == true && travellers[travellerCount].GetComponent<moveTowards>().current == targetPos)
         {
-            Debug.Log("worked");
-            GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.identity);
-            travellerCount++;
-            build = false;
+                GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.identity);
+                travellerCount++;
+                build = false;
         }
 
     }
 
     void CreateBuilding()
     {   
-        initialX = Random.Range(-maxRange, maxRange + 1);
-        initialZ = Random.Range(-maxRange, maxRange + 1);
-        targetPos = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialX), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialZ));
+        initialPos = Random.insideUnitCircle * maxRange;
+        targetPos = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialPos.x), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialPos.y));
         targetAdd = new Vector2(targetPos.x, targetPos.z);
         targetPos.y = halfRadius;
         

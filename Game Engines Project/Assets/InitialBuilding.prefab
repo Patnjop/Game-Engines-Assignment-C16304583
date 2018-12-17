@@ -114,7 +114,6 @@ MonoBehaviour:
     type: 2}
   travellerPrefab: {fileID: 1009046477674354, guid: f0a365836e4aac5439c67277b69993d1,
     type: 2}
-  maxRange: 2
   maxTime: 0
   travellers: []
 --- !u!120 &120988677236495438
@@ -153,7 +152,7 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: -0.009999871, z: 1}
+  - {x: 1, y: -0.009999871, z: 4}
   - {x: 2, y: 2, z: 2}
   m_Parameters:
     serializedVersion: 2
