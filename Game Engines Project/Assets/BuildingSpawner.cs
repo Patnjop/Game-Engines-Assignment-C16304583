@@ -7,16 +7,18 @@ public class BuildingSpawner : MonoBehaviour
     Vector3 targetPos;
     Vector2 targetAdd;
     public GameObject buildingPrefab;
-    float maxTime = 0.1f;
     public int maxRange;
-    float timer;
-    int count, initialX, initialZ;
+    float timer, halfRadius, maxTime;
+    int count, lineCount, initialX, initialZ;
     LineRenderer line;
     bool lineDraw;
 
     private void Start()
     {
         line = GetComponent<LineRenderer>();
+        maxTime = 0.1f;
+        halfRadius = 0.25f;
+        lineCount = 1;
     }
 
     // Update is called once per frame
@@ -28,13 +30,12 @@ public class BuildingSpawner : MonoBehaviour
             CreateBuilding();
             timer = 0;
         }
-        for (int i = 0; i < ListChecker.Values.Count; i++)
-        {
-            Debug.Log(ListChecker.Values[i]);
-        }
+        line.positionCount = ListChecker.Values.Count;
         if (lineDraw == true)
         {
-            line.SetPosition(1, targetPos);
+            line.SetPosition(lineCount, new Vector3(targetPos.x, targetPos.y - halfRadius, targetPos.z));
+            lineCount++;
+            lineDraw = false;
         }
     }
 
@@ -44,7 +45,7 @@ public class BuildingSpawner : MonoBehaviour
         initialZ = Random.Range(-maxRange, maxRange + 1);
         targetPos = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialX), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialZ));
         targetAdd = new Vector2(targetPos.x, targetPos.z);
-        targetPos.y = 0.25f;
+        targetPos.y = halfRadius;
         lineDraw = true;
        
         if (!ListChecker.Values.Contains(targetAdd))
