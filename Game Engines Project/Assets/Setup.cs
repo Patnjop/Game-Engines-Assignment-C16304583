@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Setup : MonoBehaviour {
-
-    [Range(1f, 10f)]
+    
+    [Range(1f, 50f)]
     public int Expansion;
 
     GameObject plane;

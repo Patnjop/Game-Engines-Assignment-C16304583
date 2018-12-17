@@ -17,6 +17,7 @@ public class Initialisation : MonoBehaviour {
 
     private void Update()
     {
+        //storing mouse Input
         if (Input.GetMouseButton (0) && !isCreated)
         {
             mouse = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
@@ -27,6 +28,7 @@ public class Initialisation : MonoBehaviour {
 
     void CreateBuilding()
     {
+        //translating mouse on screen to world position
         Ray ray = Camera.main.ScreenPointToRay(mouse);
         RaycastHit raycastHit;
         if (Physics.Raycast(ray, out raycastHit, 1000f))
@@ -37,11 +39,19 @@ public class Initialisation : MonoBehaviour {
         {
             start = Camera.main.ScreenToWorldPoint(mouse);
         }
+
+        //configuring initial building
         start.y += Radius;
         initial = new Vector2(Mathf.RoundToInt(start.x), Mathf.RoundToInt(start.z));
         start = new Vector3(initial.x, start.y, initial.y);
-        //ListChecker.transforms.Add(start);
+
+        //adjusting Linerenderer
+        startprefab.GetComponent<LineRenderer>().SetPosition(0, new Vector3(start.x, start.y-Radius,start.z));
+        
+        //adding initial co-ords to Array
         ListChecker.Values.Add(initial);
+
+        //creating the first building
         Instantiate(startprefab, start, Quaternion.identity);
     }
 }

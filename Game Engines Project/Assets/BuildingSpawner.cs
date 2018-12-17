@@ -11,6 +11,13 @@ public class BuildingSpawner : MonoBehaviour
     public int maxRange;
     float timer;
     int count, initialX, initialZ;
+    LineRenderer line;
+    bool lineDraw;
+
+    private void Start()
+    {
+        line = GetComponent<LineRenderer>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,15 +32,20 @@ public class BuildingSpawner : MonoBehaviour
         {
             Debug.Log(ListChecker.Values[i]);
         }
+        if (lineDraw == true)
+        {
+            line.SetPosition(1, targetPos);
+        }
     }
 
     void CreateBuilding()
-    {
+    {   
         initialX = Random.Range(-maxRange, maxRange + 1);
         initialZ = Random.Range(-maxRange, maxRange + 1);
         targetPos = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialX), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialZ));
         targetAdd = new Vector2(targetPos.x, targetPos.z);
         targetPos.y = 0.25f;
+        lineDraw = true;
        
         if (!ListChecker.Values.Contains(targetAdd))
         {
