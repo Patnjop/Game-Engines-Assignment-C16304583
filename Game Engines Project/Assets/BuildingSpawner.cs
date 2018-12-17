@@ -10,9 +10,10 @@ public class BuildingSpawner : MonoBehaviour
     public int maxRange;
     float timer, halfRadius;
     public float maxTime;
-    int count, lineCount, initialX, initialZ;
+    int count, lineCount, initialX, initialZ, travellerCount;
     LineRenderer line;
     bool build;
+    public List<GameObject> travellers = new List<GameObject>();
 
     private void Start()
     {
@@ -26,25 +27,22 @@ public class BuildingSpawner : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= maxTime)
+        if (timer >= maxTime && build == false)
         {
             CreateBuilding();
             timer = 0;
         }
-
-        if (build == true && moveTowards.initial == targetPos)
+        Debug.Log("build is " + build);
+        Debug.Log("target is at " + targetPos);
+        Debug.Log(travellerCount + " is at " + travellers[travellerCount].GetComponent<moveTowards>().current);
+        if (build == true && travellers[travellerCount].GetComponent<moveTowards>().current == targetPos)
         {
             Debug.Log("worked");
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.identity);
+            travellerCount++;
             build = false;
         }
-        /*line.positionCount = ListChecker.Values.Count;
-        if (lineDraw == true)
-        {
-            line.SetPosition(lineCount, new Vector3(targetPos.x, targetPos.y - halfRadius, targetPos.z));
-            lineCount++;
-            lineDraw = false;
-        }*/
+
     }
 
     void CreateBuilding()
@@ -61,6 +59,7 @@ public class BuildingSpawner : MonoBehaviour
         {
             ListChecker.Values.Add(targetAdd);   
             GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
+            travellers.Add(traveller);
             build = true;
         }
         else
