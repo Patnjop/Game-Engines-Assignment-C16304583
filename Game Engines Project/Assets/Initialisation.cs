@@ -8,6 +8,7 @@ public class Initialisation : MonoBehaviour {
     public float Radius = 0.5f;
     bool isCreated = false;
     Vector3 mouse, start;
+    Vector2 initial;
 
     // Use this for initialization
     void Start () {
@@ -37,9 +38,9 @@ public class Initialisation : MonoBehaviour {
             start = Camera.main.ScreenToWorldPoint(mouse);
         }
         start.y += Radius;
+        initial = new Vector2(Mathf.RoundToInt(start.x), Mathf.RoundToInt(start.z));
         //ListChecker.transforms.Add(start);
-        ListChecker.xValues.Add((int)start.x);
-        ListChecker.zValues.Add((int)start.z);
+        ListChecker.Values.Add(initial);
         Instantiate(startprefab, start, Quaternion.identity);
     }
 }

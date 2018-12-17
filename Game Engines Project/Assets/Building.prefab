@@ -109,4 +109,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 1820519494629726}
-  maxRange: 0.14
+  maxRange: 3
