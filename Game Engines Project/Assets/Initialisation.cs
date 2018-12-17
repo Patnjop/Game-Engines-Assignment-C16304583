@@ -7,7 +7,8 @@ public class Initialisation : MonoBehaviour {
     public GameObject startprefab;
     public float Radius = 0.5f;
     bool isCreated = false;
-    Vector3 mouse, start;
+    Vector3 mouse;
+    public static Vector3 start;
     Vector2 initial;
 
     // Use this for initialization
