@@ -7,6 +7,7 @@ public class BuildingSpawner : MonoBehaviour
     public Vector3 targetPos;
     Vector2 targetAdd, initialPos;
     public GameObject buildingPrefab, travellerPrefab;
+    float expansionFactor;
     int maxRange;
     float timer, halfRadius;
     public float maxTime;
@@ -28,7 +29,12 @@ public class BuildingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        maxRange = setup.Expansion / 2;
+        expansionFactor = ((float)setup.Expansion / 10) + 0.2f;
+        maxRange = Mathf.RoundToInt((setup.Expansion + 1) * (1 + (expansionFactor/2)));
+        //Debug.Log(setup.Expansion);
+        //Debug.Log("expansion factor is " + expansionFactor);
+        //Debug.Log("max range is " + maxRange);
+        //Debug.Log("building amount is " + Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))));
         timer += Time.deltaTime;
         if (timer >= maxTime && build == false)
         {
@@ -52,9 +58,8 @@ public class BuildingSpawner : MonoBehaviour
         targetAdd = new Vector2(targetPos.x, targetPos.z);
         targetPos.y = halfRadius;
         
-        //lineDraw = true;
        
-        if (!ListChecker.Values.Contains(targetAdd))
+        if (!ListChecker.Values.Contains(targetAdd) && travellerCount < Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))))
         {
             ListChecker.Values.Add(targetAdd);   
             GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
