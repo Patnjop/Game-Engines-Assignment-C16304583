@@ -39,6 +39,7 @@ public class Initialisation : MonoBehaviour {
         }
         start.y += Radius;
         initial = new Vector2(Mathf.RoundToInt(start.x), Mathf.RoundToInt(start.z));
+        start = new Vector3(initial.x, start.y, initial.y);
         //ListChecker.transforms.Add(start);
         ListChecker.Values.Add(initial);
         Instantiate(startprefab, start, Quaternion.identity);
