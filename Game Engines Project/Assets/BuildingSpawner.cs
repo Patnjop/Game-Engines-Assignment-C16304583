@@ -11,23 +11,22 @@ public class BuildingSpawner : MonoBehaviour
     int maxRange;
     float timer, halfRadius;
     public float maxTime;
-    int count, lineCount, initialX, initialZ, travellerCount;
+    int count, initialX, initialZ, travellerCount;
     bool build;
     public List<GameObject> travellers = new List<GameObject>();
+    public List<Vector3> targets = new List<Vector3>();
     Setup setup;
 
     private void Start()
     {
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
-        maxTime = 3f;
-        halfRadius = 0.3f;
-        lineCount = 1;
-        
+        halfRadius = 0.3f;  
     }
 
     // Update is called once per frame
     void Update()
     {
+        maxTime = setup.Expansion / 2f;
         expansionFactor = ((float)setup.Expansion / 10) + 0.2f;
         maxRange = Mathf.RoundToInt((setup.Expansion + 1) * (1 + (expansionFactor/2)));
         //Debug.Log(setup.Expansion);
@@ -41,9 +40,9 @@ public class BuildingSpawner : MonoBehaviour
             timer = 0;
         }
 
-        if (build == true && travellers[travellerCount].GetComponent<moveTowards>().current == targetPos)
+        if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targets[travellerCount]) < 0.1)
         {
-                GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.identity);
+                GameObject newBuilding = Instantiate(buildingPrefab, targets[travellerCount], Quaternion.identity);
                 travellerCount++;
                 build = false;
         }
@@ -56,14 +55,16 @@ public class BuildingSpawner : MonoBehaviour
         targetPos = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialPos.x), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialPos.y));
         targetAdd = new Vector2(targetPos.x, targetPos.z);
         targetPos.y = halfRadius;
+        targets.Add(targetPos);
         
-       
+
         if (!ListChecker.Values.Contains(targetAdd) && travellerCount < Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))))
         {
+            //Debug.Log("d");
             for (int r = 0; r < ListChecker.Values.Count; r++)
             { 
                 Debug.Log(Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)));
-                if (ListChecker.Values.Count == 1)
+                if (travellerCount == 0)
                 {
                     Debug.Log("b");
                     ListChecker.Values.Add(targetAdd);
@@ -72,21 +73,21 @@ public class BuildingSpawner : MonoBehaviour
                     build = true;
                     break;
                 }
-                else if (Vector2.Distance(ListChecker.Values[r + 1], targetAdd) < Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)))
-                {
-                    Debug.Log(Vector2.Distance(ListChecker.Values[r + 1], targetAdd));
-                    Debug.Log("a");
-                    ListChecker.Values.Add(targetAdd);
-                    GameObject traveller = Instantiate(travellerPrefab, ListChecker.Values[r + 1], Quaternion.identity);
-                    travellers.Add(traveller);
-                    build = true;
-                    break;
-                }
-                else if(Vector2.Distance(ListChecker.Values[r], targetAdd) == Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)))
+                else if (r == travellerCount)
                 {
                     Debug.Log("c");
                     ListChecker.Values.Add(targetAdd);
                     GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
+                    travellers.Add(traveller);
+                    build = true;
+                    break;
+                }
+                else if (Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)) && Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < setup.Expansion)
+                {
+                    //Debug.Log(Vector2.Distance(ListChecker.Values[r + 1], targetAdd));
+                    Debug.Log("a");
+                    ListChecker.Values.Add(targetAdd);
+                    GameObject traveller = Instantiate(travellerPrefab, travellers[r].transform.position , Quaternion.identity);
                     travellers.Add(traveller);
                     build = true;
                     break;
