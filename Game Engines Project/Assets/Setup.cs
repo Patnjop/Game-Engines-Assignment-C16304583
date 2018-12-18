@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Setup : MonoBehaviour {
     
-    [Range(2f, 8f)]
+    [Range(1f, 50f)]
     public int Expansion;
 
     GameObject plane;

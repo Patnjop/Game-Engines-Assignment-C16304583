@@ -9,22 +9,21 @@ public class moveTowards : MonoBehaviour {
     public Vector3 current;
     Vector3 initial;
     public float speed;
-    Setup setup;
 
 	// Use this for initialization
 	void Start () {
-        setup = GameObject.Find("GameManager").GetComponent<Setup>();
         buildingSpawner = GameObject.Find("InitialBuilding(Clone)").GetComponent<BuildingSpawner>();
         target = buildingSpawner.targetPos;
         initial = this.transform.position;
-        speed = setup.Expansion / 2;
     }
 	
 	// Update is called once per frame
 	void Update () {
         current = this.transform.position;
-        //speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
-        
-        this.transform.position = Vector3.Lerp(current, target, Time.deltaTime * speed);
+        speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
+        Debug.Log("target is " + target);
+        //Debug.Log(Vector3.Distance(Initialisation.start, target));
+        //Debug.Log(speed * Time.deltaTime);
+        this.transform.position = Vector3.MoveTowards(current, target, speed * Time.deltaTime);
 	}
 }
