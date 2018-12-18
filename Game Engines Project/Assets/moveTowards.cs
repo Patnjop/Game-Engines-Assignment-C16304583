@@ -21,7 +21,7 @@ public class moveTowards : MonoBehaviour {
 	void Update () {
         current = this.transform.position;
         speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
-
+        Debug.Log("target is " + target);
         //Debug.Log(Vector3.Distance(Initialisation.start, target));
         //Debug.Log(speed * Time.deltaTime);
         this.transform.position = Vector3.MoveTowards(current, target, speed * Time.deltaTime);
