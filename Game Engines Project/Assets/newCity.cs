@@ -10,7 +10,7 @@ public class newCity : MonoBehaviour {
     bool build;
     Vector2 initialPos, targetAdd, newCityInitial;
     public Vector3 targetPos1;
-    int maxRange, travellerCount;
+    int maxRange, travellerCount, citynumber;
     List<GameObject> travellers = new List<GameObject>();
     public GameObject travellerPrefab, buildingPrefab;
     public List<Vector2> Values1 = new List<Vector2>();
@@ -22,12 +22,13 @@ public class newCity : MonoBehaviour {
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         buildingSpawner = GameObject.Find("InitialCity(Clone)").GetComponent<BuildingSpawner>();
         maxTime = buildingSpawner.maxTime;
-        maxRange = buildingSpawner.maxRange;
+        maxRange = Mathf.RoundToInt((buildingSpawner.maxRange/3) * 2);
         expansionFactor = setup.Expansion;
         newCityInitial = new Vector2(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.z));
         Values1.Add(newCityInitial);
-        Debug.Log(newCityInitial);
-	}
+        citynumber = buildingSpawner.index;
+        this.gameObject.name = ("newCity" + citynumber);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -37,10 +38,10 @@ public class newCity : MonoBehaviour {
             CreateBuilding();
             timer = 0;
         }
-        Debug.Log(setup.Expansion);
-        Debug.Log("expansion factor is " + expansionFactor);
-        Debug.Log("max range is " + maxRange);
-        Debug.Log("building amount is " + buildingSpawner.buildingFactor);
+        //Debug.Log(setup.Expansion);
+        //Debug.Log("expansion factor is " + expansionFactor);
+        //Debug.Log("max range is " + maxRange);
+        //Debug.Log("building amount is " + buildingSpawner.buildingFactor);
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<MoveTowards1>().current, targetPos1) < 0.1)
         {
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos1, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
@@ -55,9 +56,8 @@ public class newCity : MonoBehaviour {
         targetPos1 = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialPos.x), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialPos.y));
         targetAdd = new Vector2(targetPos1.x, targetPos1.z);
         targetPos1.y = halfRadius;
-        Debug.Log(targetPos1);
 
-        if (!Values1.Contains(targetAdd) && travellerCount < buildingSpawner.buildingFactor)
+        if (!Values1.Contains(targetAdd) && travellerCount < Mathf.RoundToInt(buildingSpawner.buildingFactor / 2))
         {
             Values1.Add(targetAdd);
             for (int r = 0; r < Values1.Count; r++)

@@ -12,8 +12,8 @@ public class BuildingSpawner : MonoBehaviour
     float timer, halfRadius;
     public float maxTime;
     int count, initialX, initialZ;
-    public int travellerCount;
-    bool build, cityReady;
+    public int travellerCount, index;
+    bool build, cityReady, ready;
     public List<GameObject> travellers = new List<GameObject>();
     public List<Vector3> targets = new List<Vector3>();
     Setup setup;
@@ -21,22 +21,24 @@ public class BuildingSpawner : MonoBehaviour
 
     private void Start()
     {
+        index = 0;
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         halfRadius = 0.3f;
-        cityReady = true;
+        cityReady = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        maxTime = setup.Expansion / 4f;
+        maxTime = setup.Expansion;
         expansionFactor = ((float)setup.Expansion / 10) + 0.2f;
         maxRange = Mathf.RoundToInt((setup.Expansion + 1) * (1 + (expansionFactor/2)));
         buildingFactor = Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor)));
         //Debug.Log(setup.Expansion);
         //Debug.Log("expansion factor is " + expansionFactor);
         //Debug.Log("max range is " + maxRange);
-        Debug.Log("building amount is " + buildingFactor);
+        //Debug.Log("building amount is " + buildingFactor);
+        Debug.Log(build);
         timer += Time.deltaTime;
         if (timer >= maxTime && build == false)
         {
@@ -44,12 +46,19 @@ public class BuildingSpawner : MonoBehaviour
             timer = 0;
         }
 
-        if (cityReady == true && ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) == 0)
+        if (ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) == 0 && ready == false)
         {
-             Expand(); 
+            ready = true;
+            cityReady = true;
+            Expand();
         }
 
-        if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
+        if (ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) != 0)
+        {
+            ready = false;
+        }
+
+            if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
         {
                 GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.AngleAxis(Random.Range(0,90), Vector3.up));
                 travellerCount++;
@@ -107,7 +116,7 @@ public class BuildingSpawner : MonoBehaviour
         int rnd = Random.Range(0, 3);
         if (rnd == 0)
         {
-            xAdd = maxRange + maxRange + (maxRange / 2);
+            xAdd = maxRange + maxRange;
         }
         else if (rnd == 1)
         {
@@ -115,12 +124,12 @@ public class BuildingSpawner : MonoBehaviour
         }
         else if (rnd == 2)
         {
-            xAdd = -(maxRange + maxRange + (maxRange / 2));
+            xAdd = -(maxRange + maxRange);
         }
         int rnd1 = Random.Range(0, 3);
         if (rnd1 == 0)
         {
-            zAdd = maxRange + maxRange + (maxRange / 2);
+            zAdd = maxRange + maxRange ;
         }
         else if (rnd1 == 1 && rnd != 1)
         {
@@ -128,11 +137,15 @@ public class BuildingSpawner : MonoBehaviour
         }
         else if (rnd1 > 0)
         {
-            zAdd = -(maxRange + maxRange + (maxRange / 2));
+            zAdd = -(maxRange + maxRange);
         }
         Vector2 tempcityPos = new Vector2(this.transform.position.x + (xAdd + Random.insideUnitCircle.x) , this.transform.position.z + (zAdd + Random.insideUnitCircle.y));
         newcityPos = new Vector3(Mathf.RoundToInt(tempcityPos.x), 0.15f, Mathf.RoundToInt(tempcityPos.y));
-        GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
+        if (ready == true)
+        {
+            GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
+        }
+        index++;
         cityReady = false;
     }
 }

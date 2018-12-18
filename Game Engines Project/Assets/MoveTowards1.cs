@@ -10,12 +10,14 @@ public class MoveTowards1 : MonoBehaviour {
     Vector3 initial;
     public float speed;
     Setup setup;
+    BuildingSpawner buildingSpawner;
 
     // Use this for initialization
     void Start()
     {
+        buildingSpawner = GameObject.Find("InitialCity(Clone)").GetComponent<BuildingSpawner>();
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
-        newCity = GameObject.Find("newCity(Clone)").GetComponent<newCity>();
+        newCity = GameObject.Find("newCity" + buildingSpawner.index).GetComponent<newCity>();
         target = newCity.targetPos1;
         initial = this.transform.position;
         speed = setup.Expansion / 2;
@@ -29,7 +31,6 @@ public class MoveTowards1 : MonoBehaviour {
         {
             current.x += Random.Range(-0.01f, .01f);
             current.z += Random.Range(-0.01f, 0.01f);
-
         }
         //speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
         if (current == target)
