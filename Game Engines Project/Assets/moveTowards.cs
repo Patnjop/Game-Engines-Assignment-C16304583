@@ -23,6 +23,11 @@ public class moveTowards : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         current = this.transform.position;
+        if (current != target)
+        {
+            current.x += Random.Range(-0.02f, .02f);
+            current.z += Random.Range(-0.02f, 0.02f);
+        }
         //speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
         
         this.transform.position = Vector3.MoveTowards(current, target, Time.deltaTime);

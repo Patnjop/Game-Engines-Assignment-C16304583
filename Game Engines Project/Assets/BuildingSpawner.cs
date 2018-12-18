@@ -26,7 +26,7 @@ public class BuildingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        maxTime = setup.Expansion / 2f;
+        maxTime = setup.Expansion / 4f;
         expansionFactor = ((float)setup.Expansion / 10) + 0.2f;
         maxRange = Mathf.RoundToInt((setup.Expansion + 1) * (1 + (expansionFactor/2)));
         //Debug.Log(setup.Expansion);
@@ -43,7 +43,7 @@ public class BuildingSpawner : MonoBehaviour
 
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
         {
-                GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.identity);
+                GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.AngleAxis(Random.Range(0,90), Vector3.up));
                 travellerCount++;
                 build = false;
         }
@@ -79,7 +79,7 @@ public class BuildingSpawner : MonoBehaviour
                     build = true;
                     break;
                 }
-                else if (Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)) && Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < setup.Expansion +1)
+                else if (Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)) && Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < 2)
                 {
                     GameObject traveller = Instantiate(travellerPrefab, travellers[r].transform.position , Quaternion.identity);
                     travellers.Add(traveller);
