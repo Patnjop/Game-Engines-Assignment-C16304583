@@ -6,21 +6,24 @@ public class BuildingSpawner : MonoBehaviour
 {
     public Vector3 targetPos;
     Vector2 targetAdd, initialPos;
-    public GameObject buildingPrefab, travellerPrefab;
+    public GameObject buildingPrefab, travellerPrefab, InitialBuilding;
     float expansionFactor;
     int maxRange;
     float timer, halfRadius;
     public float maxTime;
-    int count, initialX, initialZ, travellerCount;
-    bool build;
+    int count, initialX, initialZ;
+    public int travellerCount;
+    bool build, cityReady;
     public List<GameObject> travellers = new List<GameObject>();
     public List<Vector3> targets = new List<Vector3>();
     Setup setup;
+    private Vector3 newcityPos;
 
     private void Start()
     {
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
-        halfRadius = 0.3f;  
+        halfRadius = 0.3f;
+        cityReady = true;
     }
 
     // Update is called once per frame
@@ -32,13 +35,17 @@ public class BuildingSpawner : MonoBehaviour
         //Debug.Log(setup.Expansion);
         //Debug.Log("expansion factor is " + expansionFactor);
         //Debug.Log("max range is " + maxRange);
-        Debug.Log("building amount is " + Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))));
+        //Debug.Log("building amount is " + Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))));
         timer += Time.deltaTime;
-        Debug.Log("build is " + build);
         if (timer >= maxTime && build == false)
         {
             CreateBuilding();
             timer = 0;
+        }
+
+        if (cityReady == true && ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) == 0)
+        {
+             Expand(); 
         }
 
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
@@ -73,7 +80,6 @@ public class BuildingSpawner : MonoBehaviour
                 }
                 else if (r == travellerCount)
                 {
-                    Debug.Log("b");
                     GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
                     travellers.Add(traveller);
                     build = true;
@@ -93,5 +99,35 @@ public class BuildingSpawner : MonoBehaviour
         {
             
         }
+    }
+
+    void Expand()
+    {
+        int xAdd;
+        int zAdd;
+        int rnd = Random.Range(0, 2);
+        int rnd1 = Random.Range(0, 2);
+        if (rnd == 0)
+        {
+            xAdd = maxRange + maxRange + (maxRange / 2);
+        }
+        else {
+            xAdd = -(maxRange + maxRange + (maxRange / 2));
+        }
+        if (rnd == 0)
+        {
+            zAdd = maxRange + maxRange + (maxRange / 2);
+        }
+        else
+        {
+            zAdd = -(maxRange + maxRange + (maxRange / 2));
+        }
+        Debug.Log(xAdd + zAdd);
+        Vector2 tempcityPos = new Vector2(this.transform.position.x + (xAdd + Random.insideUnitCircle.x) , this.transform.position.z + (zAdd + Random.insideUnitCircle.y));
+        Debug.Log(tempcityPos);
+        newcityPos = new Vector3(tempcityPos.x, halfRadius, tempcityPos.y);
+        Debug.Log(newcityPos);
+        GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
+        cityReady = false;
     }
 }
