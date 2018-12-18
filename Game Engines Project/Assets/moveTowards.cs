@@ -23,8 +23,16 @@ public class moveTowards : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         current = this.transform.position;
+<<<<<<< HEAD
         //speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
         
         this.transform.position = Vector3.Lerp(current, target, Time.deltaTime * speed);
+=======
+        speed = (Vector3.Distance(initial, target) / buildingSpawner.maxTime);
+
+        //Debug.Log(Vector3.Distance(Initialisation.start, target));
+        //Debug.Log(speed * Time.deltaTime);
+        this.transform.position = Vector3.MoveTowards(current, target, speed * Time.deltaTime);
+>>>>>>> parent of f9db605... Linerendering
 	}
 }

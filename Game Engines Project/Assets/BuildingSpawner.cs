@@ -11,7 +11,12 @@ public class BuildingSpawner : MonoBehaviour
     int maxRange;
     float timer, halfRadius;
     public float maxTime;
+<<<<<<< HEAD
     int count, initialX, initialZ, travellerCount;
+=======
+    int count, lineCount, initialX, initialZ, travellerCount;
+    LineRenderer line;
+>>>>>>> parent of f9db605... Linerendering
     bool build;
     public List<GameObject> travellers = new List<GameObject>();
     public List<Vector3> targets = new List<Vector3>();
@@ -20,7 +25,14 @@ public class BuildingSpawner : MonoBehaviour
     private void Start()
     {
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
+<<<<<<< HEAD
         halfRadius = 0.3f;  
+=======
+        maxTime = 0.1f;
+        halfRadius = 0.3f;
+        lineCount = 1;
+        
+>>>>>>> parent of f9db605... Linerendering
     }
 
     // Update is called once per frame
@@ -60,6 +72,7 @@ public class BuildingSpawner : MonoBehaviour
 
         if (!ListChecker.Values.Contains(targetAdd) && travellerCount < Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))))
         {
+<<<<<<< HEAD
             //Debug.Log("d");
             for (int r = 0; r < ListChecker.Values.Count; r++)
             { 
@@ -94,6 +107,12 @@ public class BuildingSpawner : MonoBehaviour
                 }
             }   
             
+=======
+            ListChecker.Values.Add(targetAdd);   
+            GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
+            travellers.Add(traveller);
+            build = true;
+>>>>>>> parent of f9db605... Linerendering
         }
         else
         {

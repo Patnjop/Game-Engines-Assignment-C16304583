@@ -46,6 +46,9 @@ public class Initialisation : MonoBehaviour {
         initial = new Vector2(Mathf.RoundToInt(start.x), Mathf.RoundToInt(start.z));
         start = new Vector3(initial.x, start.y, initial.y);
 
+        //adjusting Linerenderer
+        startprefab.GetComponent<LineRenderer>().SetPosition(0, new Vector3(start.x, start.y-Radius,start.z));
+        
         //adding initial co-ords to Array
         ListChecker.Values.Add(initial);
 
