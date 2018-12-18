@@ -32,17 +32,18 @@ public class BuildingSpawner : MonoBehaviour
         //Debug.Log(setup.Expansion);
         //Debug.Log("expansion factor is " + expansionFactor);
         //Debug.Log("max range is " + maxRange);
-        //Debug.Log("building amount is " + Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))));
+        Debug.Log("building amount is " + Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))));
         timer += Time.deltaTime;
+        Debug.Log("build is " + build);
         if (timer >= maxTime && build == false)
         {
             CreateBuilding();
             timer = 0;
         }
 
-        if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targets[travellerCount]) < 0.1)
+        if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
         {
-                GameObject newBuilding = Instantiate(buildingPrefab, targets[travellerCount], Quaternion.identity);
+                GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.identity);
                 travellerCount++;
                 build = false;
         }
@@ -55,19 +56,16 @@ public class BuildingSpawner : MonoBehaviour
         targetPos = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialPos.x), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialPos.y));
         targetAdd = new Vector2(targetPos.x, targetPos.z);
         targetPos.y = halfRadius;
-        targets.Add(targetPos);
+        //targets.Add(targetPos);
         
 
         if (!ListChecker.Values.Contains(targetAdd) && travellerCount < Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor))))
         {
-            //Debug.Log("d");
+            ListChecker.Values.Add(targetAdd);
             for (int r = 0; r < ListChecker.Values.Count; r++)
             { 
-                Debug.Log(Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)));
                 if (travellerCount == 0)
                 {
-                    Debug.Log("b");
-                    ListChecker.Values.Add(targetAdd);
                     GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
                     travellers.Add(traveller);
                     build = true;
@@ -75,18 +73,14 @@ public class BuildingSpawner : MonoBehaviour
                 }
                 else if (r == travellerCount)
                 {
-                    Debug.Log("c");
-                    ListChecker.Values.Add(targetAdd);
+                    Debug.Log("b");
                     GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
                     travellers.Add(traveller);
                     build = true;
                     break;
                 }
-                else if (Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)) && Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < setup.Expansion)
+                else if (Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < Vector2.Distance(targetAdd, new Vector2(this.transform.position.x, this.transform.position.z)) && Vector2.Distance(new Vector2(travellers[r].transform.position.x, travellers[r].transform.position.z), targetAdd) < setup.Expansion +1)
                 {
-                    //Debug.Log(Vector2.Distance(ListChecker.Values[r + 1], targetAdd));
-                    Debug.Log("a");
-                    ListChecker.Values.Add(targetAdd);
                     GameObject traveller = Instantiate(travellerPrefab, travellers[r].transform.position , Quaternion.identity);
                     travellers.Add(traveller);
                     build = true;
