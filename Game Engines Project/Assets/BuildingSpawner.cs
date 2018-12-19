@@ -6,7 +6,7 @@ public class BuildingSpawner : MonoBehaviour
 {
     public Vector3 targetPos;
     Vector2 targetAdd, initialPos;
-    public GameObject buildingPrefab, travellerPrefab, InitialBuilding;
+    public GameObject buildingPrefab, travellerPrefab, InitialBuilding, Pie;
     float expansionFactor;
     public int maxRange, buildingFactor;
     float timer, halfRadius;
@@ -32,6 +32,7 @@ public class BuildingSpawner : MonoBehaviour
         index = 0;
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         halfRadius = 0.3f;
+        Pie = setup.Pie;
         ready = true;
     }
 
@@ -113,6 +114,7 @@ public class BuildingSpawner : MonoBehaviour
                 if (travellerCount == 0)
                 {
                     GameObject traveller = Instantiate(travellerPrefab, this.transform.position, Quaternion.identity);
+                    Pie.transform.SetParent(traveller.transform);
                     travellers.Add(traveller);
                     build = true;
                     break;
