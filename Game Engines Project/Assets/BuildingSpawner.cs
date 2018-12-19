@@ -11,11 +11,11 @@ public class BuildingSpawner : MonoBehaviour
     public int maxRange, buildingFactor;
     float timer, halfRadius;
     public float maxTime;
-    int count, initialX, initialZ, rand, cityCount, mainbuildingCount;
+    int count, initialX, initialZ, rand;
     public int travellerCount, index;
     bool build, ready, canConsolidate;
     public List<GameObject> travellers = new List<GameObject>();
-    public List<Vector3> targets = new List<Vector3>();
+    public List<Vector2> newCityRandoms = new List<Vector2>();
     public List<GameObject> buildings = new List<GameObject>();
     Setup setup;
     private Vector3 newcityPos;
@@ -45,17 +45,20 @@ public class BuildingSpawner : MonoBehaviour
         if (timer >= maxTime && build == false)
         {
             CreateBuilding();
+            if (index > Mathf.RoundToInt(16 / setup.Expansion))
+            {
+                Consolidate();
+            }
             timer = 0;
         }
 
         if (buildings.Count % ((setup.Expansion + setup.Expansion) * 2) == 0 && ready == false)
         {
             ready = true;
-            if (cityCount <= Mathf.RoundToInt(16 / setup.Expansion))
+            if (index <= Mathf.RoundToInt(16 / setup.Expansion))
             {
                 Expand();
             }
-            else { }
         }
 
         if (buildings.Count % ((setup.Expansion + setup.Expansion) * 2) != 0)
@@ -158,13 +161,20 @@ public class BuildingSpawner : MonoBehaviour
         {
             zAdd = -(maxRange + maxRange);
         }
-        Vector2 tempcityPos = new Vector2(this.transform.position.x + (xAdd + Random.insideUnitCircle.x) , this.transform.position.z + (zAdd + Random.insideUnitCircle.y));
-        newcityPos = new Vector3(Mathf.RoundToInt(tempcityPos.x), 0.15f, Mathf.RoundToInt(tempcityPos.y));
-        if (ready == true)
+        if (!newCityRandoms.Contains(new Vector2(rnd, rnd1)))
         {
-            GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
+            newCityRandoms.Add(new Vector2(rnd, rnd1));
+            Vector2 tempcityPos = new Vector2(this.transform.position.x + (xAdd + Random.insideUnitCircle.x), this.transform.position.z + (zAdd + Random.insideUnitCircle.y));
+            newcityPos = new Vector3(Mathf.RoundToInt(tempcityPos.x), 0.15f, Mathf.RoundToInt(tempcityPos.y));
+            if (ready == true)
+            {
+                GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
+                index++;
+            }
         }
-        index++;
+        else {
+            Expand();
+        }
     }
 
     void Consolidate()
