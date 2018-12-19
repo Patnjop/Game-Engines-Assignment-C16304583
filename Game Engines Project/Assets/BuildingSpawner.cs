@@ -174,7 +174,7 @@ public class BuildingSpawner : MonoBehaviour
         {
             newCityRandoms.Add(new Vector2(rnd, rnd1));
             Vector2 tempcityPos = new Vector2(this.transform.position.x + (xAdd + Random.insideUnitCircle.x), this.transform.position.z + (zAdd + Random.insideUnitCircle.y));
-            newcityPos = new Vector3(Mathf.RoundToInt(tempcityPos.x), 0.15f, Mathf.RoundToInt(tempcityPos.y));
+            newcityPos = new Vector3(Mathf.RoundToInt(tempcityPos.x), 0.3f, Mathf.RoundToInt(tempcityPos.y));
             if (ready == true)
             {
                 GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
@@ -198,7 +198,7 @@ public class BuildingSpawner : MonoBehaviour
             if (canConsolidate == false)
             {
                 GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
-                Color color = buildings[rand].GetComponent<Renderer>().material.color * newScale;
+                Color color = this.GetComponent<Renderer>().material.color * newScale;
                 newBuilding.GetComponent<Renderer>().material.color = color;
                 newBuilding.GetComponentInChildren<Light>().color = color;
                 newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);

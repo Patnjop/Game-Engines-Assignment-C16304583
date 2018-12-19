@@ -45,6 +45,9 @@ public class newCity : MonoBehaviour {
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<MoveTowards1>().current, targetPos1) < 0.1)
         {
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos1, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+            Color color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1);
+            newBuilding.GetComponent<Renderer>().material.color = color;
+            newBuilding.GetComponentInChildren<Light>().color = color;
             buildingSpawner.buildings.Add(newBuilding);
             travellerCount++;
             build = false;
