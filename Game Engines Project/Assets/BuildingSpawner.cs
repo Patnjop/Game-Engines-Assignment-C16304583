@@ -11,7 +11,7 @@ public class BuildingSpawner : MonoBehaviour
     public int maxRange, buildingFactor;
     float timer, halfRadius;
     public float maxTime;
-    int count, initialX, initialZ, rand;
+    int count, initialX, initialZ, rand, cityCount, mainbuildingCount;
     public int travellerCount, index;
     bool build, ready, canConsolidate;
     public List<GameObject> travellers = new List<GameObject>();
@@ -51,7 +51,11 @@ public class BuildingSpawner : MonoBehaviour
         if (buildings.Count % ((setup.Expansion + setup.Expansion) * 2) == 0 && ready == false)
         {
             ready = true;
-            Expand();
+            if (cityCount <= Mathf.RoundToInt(16 / setup.Expansion))
+            {
+                Expand();
+            }
+            else { }
         }
 
         if (buildings.Count % ((setup.Expansion + setup.Expansion) * 2) != 0)
@@ -62,8 +66,8 @@ public class BuildingSpawner : MonoBehaviour
         if (buildings.Count % (setup.Expansion) == 0 && canConsolidate == true)
         {
             canConsolidate = false;
-            rand++;
             Consolidate();
+            rand++;
         }
 
         if (buildings.Count % (setup.Expansion) != 0)
@@ -164,14 +168,28 @@ public class BuildingSpawner : MonoBehaviour
     }
 
     void Consolidate()
-    { 
-        float newScale = buildings[rand].transform.localScale.x - 0.1f;
-        Vector3 conPos = new Vector3(buildings[rand].transform.position.x, buildings[rand].transform.position.y + (newScale + 0.05f), buildings[rand].transform.position.z);
-        if (canConsolidate == false)
+    {
+        if (rand == 0)
         {
-            GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
-            newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);
-            buildings.Add(newBuilding);
+            float newScale = this.transform.localScale.x - 0.1f;
+            Vector3 conPos = new Vector3(this.transform.position.x, this.transform.position.y + (newScale + 0.05f), this.transform.position.z);
+            if (canConsolidate == false)
+            {
+                GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+                newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);
+                buildings.Add(newBuilding);
+            }
+        }
+        else
+        {
+            float newScale = buildings[rand].transform.localScale.x - 0.1f;
+            Vector3 conPos = new Vector3(buildings[rand].transform.position.x, buildings[rand].transform.position.y + (newScale + 0.05f), buildings[rand].transform.position.z);
+            if (canConsolidate == false)
+            {
+                GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+                newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);
+                buildings.Add(newBuilding);
+            }
         }
     }
 }

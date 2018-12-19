@@ -22,7 +22,7 @@ public class newCity : MonoBehaviour {
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         buildingSpawner = GameObject.Find("InitialCity(Clone)").GetComponent<BuildingSpawner>();
         maxTime = buildingSpawner.maxTime;
-        maxRange = Mathf.RoundToInt((buildingSpawner.maxRange/3) * 2);
+        maxRange = Mathf.RoundToInt((buildingSpawner.maxRange/4) * 3);
         expansionFactor = setup.Expansion;
         newCityInitial = new Vector2(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.z));
         Values1.Add(newCityInitial);
