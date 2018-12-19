@@ -16,7 +16,7 @@ public class BuildingSpawner : MonoBehaviour
     bool build, ready, canConsolidate;
     public List<GameObject> travellers = new List<GameObject>();
     public List<Vector3> targets = new List<Vector3>();
-    List<GameObject> buildings = new List<GameObject>();
+    public List<GameObject> buildings = new List<GameObject>();
     Setup setup;
     private Vector3 newcityPos;
 
@@ -26,12 +26,13 @@ public class BuildingSpawner : MonoBehaviour
         index = 0;
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         halfRadius = 0.3f;
+        ready = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        maxTime = setup.Expansion;
+        maxTime = 4 / setup.Expansion;
         expansionFactor = ((float)setup.Expansion / 10) + 0.2f;
         maxRange = Mathf.RoundToInt((setup.Expansion + 1) * (1 + (expansionFactor/2)));
         buildingFactor = Mathf.RoundToInt((Mathf.Pow((setup.Expansion + 2), 2) * (1 + expansionFactor)));
@@ -47,13 +48,13 @@ public class BuildingSpawner : MonoBehaviour
             timer = 0;
         }
 
-        if (ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) == 0 && ready == false)
+        if (buildings.Count % ((setup.Expansion + setup.Expansion) * 2) == 0 && ready == false)
         {
             ready = true;
             Expand();
         }
 
-        if (ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) != 0)
+        if (buildings.Count % ((setup.Expansion + setup.Expansion) * 2) != 0)
         {
             ready = false;
         }
@@ -70,7 +71,7 @@ public class BuildingSpawner : MonoBehaviour
             canConsolidate = true;
         }
 
-            if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
+        if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
         {
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.AngleAxis(Random.Range(0,90), Vector3.up));
             buildings.Add(newBuilding);

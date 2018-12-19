@@ -45,6 +45,7 @@ public class newCity : MonoBehaviour {
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<MoveTowards1>().current, targetPos1) < 0.1)
         {
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos1, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+            buildingSpawner.buildings.Add(newBuilding);
             travellerCount++;
             build = false;
         }
@@ -91,4 +92,5 @@ public class newCity : MonoBehaviour {
 
         }
     }
+    
 }
