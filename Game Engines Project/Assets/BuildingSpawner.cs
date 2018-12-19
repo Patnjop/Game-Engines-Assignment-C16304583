@@ -19,9 +19,15 @@ public class BuildingSpawner : MonoBehaviour
     public List<GameObject> buildings = new List<GameObject>();
     Setup setup;
     private Vector3 newcityPos;
+    Color rndColor;
+    Light childLight;
 
     private void Start()
     {
+        childLight = GetComponentInChildren<Light>();
+        rndColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1);
+        GetComponent<Renderer>().material.color = rndColor;
+        childLight.color = rndColor;
         rand = 0;
         index = 0;
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
@@ -81,6 +87,9 @@ public class BuildingSpawner : MonoBehaviour
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
         {
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.AngleAxis(Random.Range(0,90), Vector3.up));
+            Color color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1);
+            newBuilding.GetComponent<Renderer>().material.color = color;
+            newBuilding.GetComponentInChildren<Light>().color = color;
             buildings.Add(newBuilding);
             travellerCount++;
             build = false;
@@ -169,6 +178,9 @@ public class BuildingSpawner : MonoBehaviour
             if (ready == true)
             {
                 GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
+                Color color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1);
+                city.GetComponent<Renderer>().material.color = color;
+                city.GetComponentInChildren<Light>().color = color;
                 index++;
             }
         }
@@ -186,6 +198,9 @@ public class BuildingSpawner : MonoBehaviour
             if (canConsolidate == false)
             {
                 GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+                Color color = buildings[rand].GetComponent<Renderer>().material.color * newScale;
+                newBuilding.GetComponent<Renderer>().material.color = color;
+                newBuilding.GetComponentInChildren<Light>().color = color;
                 newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);
                 buildings.Add(newBuilding);
             }
@@ -197,6 +212,9 @@ public class BuildingSpawner : MonoBehaviour
             if (canConsolidate == false)
             {
                 GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+                Color color = buildings[rand].GetComponent<Renderer>().material.color * newScale;
+                newBuilding.GetComponent<Renderer>().material.color = color;
+                newBuilding.GetComponentInChildren<Light>().color = color;
                 newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);
                 buildings.Add(newBuilding);
             }
