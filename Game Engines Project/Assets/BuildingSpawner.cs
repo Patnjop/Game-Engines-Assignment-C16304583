@@ -13,9 +13,10 @@ public class BuildingSpawner : MonoBehaviour
     public float maxTime;
     int count, initialX, initialZ;
     public int travellerCount, index;
-    bool build, cityReady, ready;
+    bool build, ready, canConsolidate;
     public List<GameObject> travellers = new List<GameObject>();
     public List<Vector3> targets = new List<Vector3>();
+    List<GameObject> buildings = new List<GameObject>();
     Setup setup;
     private Vector3 newcityPos;
 
@@ -24,7 +25,6 @@ public class BuildingSpawner : MonoBehaviour
         index = 0;
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         halfRadius = 0.3f;
-        cityReady = false;
     }
 
     // Update is called once per frame
@@ -49,7 +49,6 @@ public class BuildingSpawner : MonoBehaviour
         if (ListChecker.Values.Count % ((setup.Expansion + setup.Expansion) * 2) == 0 && ready == false)
         {
             ready = true;
-            cityReady = true;
             Expand();
         }
 
@@ -58,11 +57,24 @@ public class BuildingSpawner : MonoBehaviour
             ready = false;
         }
 
+        if (buildings.Count % (setup.Expansion) == 0 && canConsolidate == true)
+        {
+            canConsolidate = false;
+            Debug.Log("ping");
+            Consolidate();
+        }
+
+        if (buildings.Count % (setup.Expansion) != 0)
+        {
+            canConsolidate = true;
+        }
+
             if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<moveTowards>().current, targetPos) < 0.1)
         {
-                GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.AngleAxis(Random.Range(0,90), Vector3.up));
-                travellerCount++;
-                build = false;
+            GameObject newBuilding = Instantiate(buildingPrefab, targetPos, Quaternion.AngleAxis(Random.Range(0,90), Vector3.up));
+            buildings.Add(newBuilding);
+            travellerCount++;
+            build = false;
         }
 
     }
@@ -77,6 +89,7 @@ public class BuildingSpawner : MonoBehaviour
         if (!ListChecker.Values.Contains(targetAdd) && travellerCount < buildingFactor)
         {
             ListChecker.Values.Add(targetAdd);
+            
             for (int r = 0; r < ListChecker.Values.Count; r++)
             { 
                 if (travellerCount == 0)
@@ -146,6 +159,18 @@ public class BuildingSpawner : MonoBehaviour
             GameObject city = Instantiate(InitialBuilding, newcityPos, Quaternion.identity);
         }
         index++;
-        cityReady = false;
+    }
+
+    void Consolidate()
+    {
+        int rand = Random.Range(0, buildings.Count);
+        float newScale = buildings[rand].transform.localScale.x;
+        Vector3 conPos = new Vector3(buildings[rand].transform.position.x, buildings[rand].transform.position.y + (newScale - 0.05f), buildings[rand].transform.position.z);
+        if (canConsolidate == false)
+        {
+            GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
+            newBuilding.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+            buildings.Add(newBuilding);
+        }
     }
 }
