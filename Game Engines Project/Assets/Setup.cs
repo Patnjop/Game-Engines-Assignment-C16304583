@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Setup : MonoBehaviour {
     
-    [Range(2f, 8f)]
+    [Range(2f, 10f)]
     public int Expansion;
 
 	// Use this for initialization
