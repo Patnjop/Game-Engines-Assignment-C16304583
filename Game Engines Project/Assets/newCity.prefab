@@ -37,7 +37,6 @@ GameObject:
   - component: {fileID: 4368346775540640}
   - component: {fileID: 33571083373667174}
   - component: {fileID: 23816998577860586}
-  - component: {fileID: 65041947711729488}
   - component: {fileID: 114332048998442418}
   m_Layer: 0
   m_Name: newCity
@@ -115,18 +114,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1533097304211738}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65041947711729488
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1533097304211738}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!108 &108984434925232472
 Light:
   m_ObjectHideFlags: 1
@@ -177,6 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingSpawner: {fileID: 0}
   targetPos1: {x: 0, y: 0, z: 0}
+  travellers: []
   travellerPrefab: {fileID: 1009046477674354, guid: bec3600994e3e0d4cafe8a70bfc0e385,
     type: 2}
   buildingPrefab: {fileID: 1820519494629726, guid: 3c27b8fd461effa42b6a7b007c063ed5,

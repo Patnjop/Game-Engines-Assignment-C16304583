@@ -10,8 +10,8 @@ public class newCity : MonoBehaviour {
     bool build;
     Vector2 initialPos, targetAdd, newCityInitial;
     public Vector3 targetPos1;
-    int maxRange, travellerCount, citynumber;
-    List<GameObject> travellers = new List<GameObject>();
+    int maxRange, travellerCount, citynumber, buildingFactor;
+    public List<GameObject> travellers = new List<GameObject>();
     public GameObject travellerPrefab, buildingPrefab;
     public List<Vector2> Values1 = new List<Vector2>();
 
@@ -26,14 +26,16 @@ public class newCity : MonoBehaviour {
         expansionFactor = setup.Expansion;
         newCityInitial = new Vector2(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.z));
         Values1.Add(newCityInitial);
+        buildingSpawner.buildings.Add(this.gameObject);
         citynumber = buildingSpawner.index;
         this.gameObject.name = ("newCity" + citynumber);
+        buildingFactor = buildingSpawner.buildingFactor / 2;
     }
 	
 	// Update is called once per frame
 	void Update () {
         timer += Time.deltaTime;
-        if (timer >= maxTime && build == false)
+        if (timer >= maxTime * 2 && build == false)
         {
             CreateBuilding();
             timer = 0;
@@ -44,6 +46,7 @@ public class newCity : MonoBehaviour {
         //Debug.Log("building amount is " + buildingSpawner.buildingFactor);
         if (build == true && Vector3.Distance(travellers[travellerCount].GetComponent<MoveTowards1>().current, targetPos1) < 0.1)
         {
+            Debug.Log("ff");
             GameObject newBuilding = Instantiate(buildingPrefab, targetPos1, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
             Color color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1);
             newBuilding.GetComponent<Renderer>().material.color = color;
@@ -57,11 +60,11 @@ public class newCity : MonoBehaviour {
     void CreateBuilding()
     {
         initialPos = Random.insideUnitCircle * maxRange;
-        targetPos1 = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialPos.x), 0.03f, Mathf.RoundToInt(this.transform.position.z + initialPos.y));
+        targetPos1 = new Vector3(Mathf.RoundToInt(this.transform.position.x + initialPos.x), 0, Mathf.RoundToInt(this.transform.position.z + initialPos.y));
         targetAdd = new Vector2(targetPos1.x, targetPos1.z);
         targetPos1.y = halfRadius;
 
-        if (!Values1.Contains(targetAdd) && travellerCount < Mathf.RoundToInt(buildingSpawner.buildingFactor / 2))
+        if (!Values1.Contains(targetAdd) && travellerCount < Mathf.RoundToInt(buildingFactor))
         {
             Values1.Add(targetAdd);
             for (int r = 0; r < Values1.Count; r++)

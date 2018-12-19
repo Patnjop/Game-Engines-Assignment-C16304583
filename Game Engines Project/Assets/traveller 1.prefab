@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4017780774763258}
   - component: {fileID: 33916454645413256}
   - component: {fileID: 23036174139409604}
-  - component: {fileID: 135319498319319500}
   - component: {fileID: 96753918972345928}
   - component: {fileID: 114958643213606092}
   m_Layer: 0
@@ -192,15 +191,3 @@ MonoBehaviour:
   newCity: {fileID: 0}
   current: {x: 0, y: 0, z: 0}
   speed: 0
---- !u!135 &135319498319319500
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1009046477674354}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
