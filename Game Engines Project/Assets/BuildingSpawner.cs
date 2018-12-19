@@ -11,7 +11,7 @@ public class BuildingSpawner : MonoBehaviour
     public int maxRange, buildingFactor;
     float timer, halfRadius;
     public float maxTime;
-    int count, initialX, initialZ;
+    int count, initialX, initialZ, rand;
     public int travellerCount, index;
     bool build, ready, canConsolidate;
     public List<GameObject> travellers = new List<GameObject>();
@@ -22,6 +22,7 @@ public class BuildingSpawner : MonoBehaviour
 
     private void Start()
     {
+        rand = 0;
         index = 0;
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         halfRadius = 0.3f;
@@ -60,7 +61,7 @@ public class BuildingSpawner : MonoBehaviour
         if (buildings.Count % (setup.Expansion) == 0 && canConsolidate == true)
         {
             canConsolidate = false;
-            Debug.Log("ping");
+            rand++;
             Consolidate();
         }
 
@@ -162,14 +163,13 @@ public class BuildingSpawner : MonoBehaviour
     }
 
     void Consolidate()
-    {
-        int rand = Random.Range(0, buildings.Count);
-        float newScale = buildings[rand].transform.localScale.x;
-        Vector3 conPos = new Vector3(buildings[rand].transform.position.x, buildings[rand].transform.position.y + (newScale - 0.05f), buildings[rand].transform.position.z);
+    { 
+        float newScale = buildings[rand].transform.localScale.x - 0.1f;
+        Vector3 conPos = new Vector3(buildings[rand].transform.position.x, buildings[rand].transform.position.y + (newScale + 0.05f), buildings[rand].transform.position.z);
         if (canConsolidate == false)
         {
             GameObject newBuilding = Instantiate(buildingPrefab, conPos, Quaternion.AngleAxis(Random.Range(0, 90), Vector3.up));
-            newBuilding.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+            newBuilding.transform.localScale = new Vector3(newScale, newScale, newScale);
             buildings.Add(newBuilding);
         }
     }
