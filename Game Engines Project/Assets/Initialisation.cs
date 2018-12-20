@@ -7,6 +7,7 @@ public class Initialisation : MonoBehaviour {
     public GameObject startprefab;
     public float Radius = 0.5f;
     bool isCreated = false;
+    public AudioSource audioSource;
     Vector3 mouse;
     public static Vector3 start;
     Vector2 initial;
@@ -51,5 +52,6 @@ public class Initialisation : MonoBehaviour {
 
         //creating the first building
         Instantiate(startprefab, start, Quaternion.identity);
+        audioSource.enabled = true;
     }
 }

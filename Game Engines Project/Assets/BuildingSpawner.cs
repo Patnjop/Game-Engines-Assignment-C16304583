@@ -6,7 +6,8 @@ public class BuildingSpawner : MonoBehaviour
 {
     public Vector3 targetPos;
     Vector2 targetAdd, initialPos;
-    public GameObject buildingPrefab, travellerPrefab, InitialBuilding, Pie;
+    public GameObject buildingPrefab, travellerPrefab, InitialBuilding;
+    Camera Pie;
     float expansionFactor;
     public int maxRange, buildingFactor;
     float timer, halfRadius;
