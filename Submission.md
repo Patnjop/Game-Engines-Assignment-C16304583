@@ -4,7 +4,7 @@ My project is a civilisation simulation, before the game starts a variable can b
 # What I did
 I made most of what I had worked on by myself. I referred to the class work to help me with raycasting for the initial city to be placed and for the circular motion used by one of the cameras.
 
-# What I did
+# What I am most proud of
 I am most proud of creating a rule based system that works better than I expected as well as being able to make it visually interesting
 
 # Youtube link
