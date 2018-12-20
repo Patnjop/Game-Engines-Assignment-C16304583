@@ -7,17 +7,14 @@ public class Setup : MonoBehaviour {
     [Range(2f, 10f)]
     public int Expansion, liveCamera;
     public Camera Pie, Free, Train;
-    List<Camera> Cameras = new List<Camera>();
+    public List<Camera> Cameras = new List<Camera>();
     Camera currentCamera;
 
     // Use this for initialization
     void Start() {
         Cameras.Add(Pie);
         Cameras.Add(Free);
-        Cameras.Add(Train);
         Pie.transform.position = new Vector3(0f, (Expansion * 5) + 5, 0f);
-        Free.GetComponent<Camera>().enabled = false;
-        Train.GetComponent<Camera>().enabled = false;
         currentCamera = Pie;
     }
 

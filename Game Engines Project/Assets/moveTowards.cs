@@ -10,14 +10,18 @@ public class moveTowards : MonoBehaviour {
     Vector3 initial;
     public float speed;
     Setup setup;
+    Color rndColor;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
+        rndColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.7f, 1);
         setup = GameObject.Find("GameManager").GetComponent<Setup>();
         buildingSpawner = GameObject.Find("InitialCity(Clone)").GetComponent<BuildingSpawner>();
         target = buildingSpawner.targetPos;
         initial = this.transform.position;
         speed = setup.Expansion / 2;
+        this.GetComponent<MeshRenderer>().material.SetColor("rnd", rndColor);
+        this.GetComponent<TrailRenderer>().material.SetColor("_Random", rndColor);
     }
 	
 	// Update is called once per frame
